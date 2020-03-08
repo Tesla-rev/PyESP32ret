@@ -62,7 +62,7 @@ def canlogger():
 	# -127174929 - 262 S 0 6 b 0 a7 ce 0 30
 	# -127174422 - 39a S 0 8 ff fe fe fe fe 0 0
 
-#	db = cantools.database.load_file('Model3CAN.dbc')
+#	db = cantools.database.load_file('model3dbc/Model3CAN.dbc')
 
 	conn = sqlite3.connect('model3-vehicle-bus.db')
 	logging.debug('Starting')
