@@ -12,6 +12,9 @@ $ python3 ./esp32ret.py
 
 ^C
 
+$ sqlite3 model3-vehicle-bus.db "SELECT count(*) FROM sqlite_master WHERE type='table'"
+182
+
 $ sqlite3 model3-vehicle-bus.db ".tables"
 102  201  228  261  287  2c3  2f9  320  352  383  3b2  3da  422  545  75d  82 
 103  204  22a  262  288  2c4  300  321  359  387  3b3  3db  423  559  76a  c  
@@ -29,5 +32,4 @@ $ sqlite3 model3-vehicle-bus.db ".tables"
 
 $ sqlite3 model3-vehicle-bus.db "select * from \"102\" limit 5"
 -890087351|102|S|0|8|22 33 0 0 c6 12 91 9
-
 
