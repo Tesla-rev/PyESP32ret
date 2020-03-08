@@ -10,7 +10,7 @@ import time
 import logging
 import socket
 import binascii
-#import cantools 
+import cantools 
 
 # Setup CAN log database
 def setup():
@@ -60,7 +60,7 @@ def canlogger():
 	# -127174929 - 262 S 0 6 b 0 a7 ce 0 30
 	# -127174422 - 39a S 0 8 ff fe fe fe fe 0 0
 
-#	db = cantools.database.load_file('model3dbc/Model3CAN.dbc')
+	db = cantools.database.load_file('model3dbc/Model3CAN.dbc')
 
 	conn = sqlite3.connect('model3-vehicle-bus.db')
 	logging.debug('Starting')
@@ -73,8 +73,6 @@ def canlogger():
 		sfile = s.makefile("r", buffering=1) # unbuffered streams MUST be binary. 
 		for data in sfile:
 			data = data.rstrip().split(" ")
-			logging.debug(data)
-			# (CanLogger ) ['622016298', '-', '439', 'S', '0', '8', '0', '0', '0', '1', '0', '0', '18', '3']
 			timestamp = data[0]
 			frameid = data[2]
 			frametype = data[3]
@@ -91,9 +89,10 @@ def canlogger():
 				conn.execute("INSERT INTO \"" + frameid + "\" (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (timestamp, frameid, frametype, bus, len, packetdata ) )
 				conn.commit()
 
-
-			#db.decode_message(frameid, packetdata)
-
+			try:
+				print(db.decode_message(int(frameid,16), packetdata.encode('utf-8') ) )
+			except:
+				continue
 # Make sure DB is setup 
 setup()
 # Start the Can Logging program! 
