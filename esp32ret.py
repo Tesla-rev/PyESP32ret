@@ -77,9 +77,13 @@ def canlogger():
 			data = data.rstrip().split(" ")
 			logging.debug(data)
 			# (CanLogger ) ['622016298', '-', '439', 'S', '0', '8', '0', '0', '0', '1', '0', '0', '18', '3']
-
+			timestamp = data[0]
+			frameid = data[2]
+			frametype = data[3]
+			bus = data[4]
+			len = data[5]
 			packetdata = ' '.join(data[6:])
-			conn.execute("INSERT INTO CAN (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (data[0], data[2], data[3], data[4], data[5], packetdata ) )
+			conn.execute("INSERT INTO CAN (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (timestamp, frameid, frametype, bus, len, packetdata ) )
 			conn.commit()
 
 			#db.decode_message(data[2], data[6:])
