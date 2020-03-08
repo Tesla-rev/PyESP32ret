@@ -2,7 +2,7 @@
 Python Client for ESP32RET https://github.com/collin80/ESP32RET 
 
 # CAN ID's for Model 3 
-https://docs.google.com/spreadsheets/d/1ijvNE4lU9Xoruvcg5AhUNLKr7xYyHcxa8YSkTxAERUw/edit?fbclid=IwAR0yCZTsOD3Tm7lQ_ObPqJIfLwbW-_uGdOm-UFCEHqwGW-dETsXQCr1ISh8#gid=0
+https://docs.google.com/spreadsheets/d/1ijvNE4lU9Xoruvcg5AhUNLKr7xYyHcxa8YSkTxAERUw
 
 # DBC file for Tesla Model 3 CAN messages
 https://github.com/joshwardell/model3dbc
