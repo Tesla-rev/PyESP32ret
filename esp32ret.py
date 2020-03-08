@@ -17,8 +17,6 @@ def setup():
 	dbfile = pathlib.Path('model3-vehicle-bus.db')
 	if not dbfile.exists():
 		conn = sqlite3.connect('model3-vehicle-bus.db')
-		conn.execute("CREATE TABLE CAN (TIMESTAMP INT PRIMARY KEY NOT NULL, FRAMEID TEXT NOT NULL, \
-			FRAMETYPE CHAR(1) , BUS CHAR(10),  LEN CHAR(10), FRAMEDATA CHAR(256) );")
 		conn.commit()
 		conn.close()
 
@@ -83,10 +81,18 @@ def canlogger():
 			bus = data[4]
 			len = data[5]
 			packetdata = ' '.join(data[6:])
-			conn.execute("INSERT INTO CAN (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (timestamp, frameid, frametype, bus, len, packetdata ) )
-			conn.commit()
+			cur = conn.cursor()
+			cur.execute("SELECT count(name) FROM sqlite_master WHERE type='table' AND name='" + frameid + "' ")
+			if cur.fetchone()[0]==1 :
+				conn.execute("INSERT INTO \"" + frameid + "\" (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (timestamp, frameid, frametype, bus, len, packetdata ) )
+				conn.commit()
+			else:
+				conn.execute("CREATE TABLE \"" + frameid + "\" (TIMESTAMP INT PRIMARY KEY NOT NULL, FRAMEID TEXT NOT NULL, FRAMETYPE CHAR(1) , BUS CHAR(10),  LEN CHAR(10), FRAMEDATA CHAR(256) )")
+				conn.execute("INSERT INTO \"" + frameid + "\" (TIMESTAMP,FRAMEID,FRAMETYPE,BUS,LEN,FRAMEDATA) VALUES (?,?,?,?,?,?)", (timestamp, frameid, frametype, bus, len, packetdata ) )
+				conn.commit()
 
-			#db.decode_message(data[2], data[6:])
+
+			#db.decode_message(frameid, packetdata)
 
 # Make sure DB is setup 
 setup()
